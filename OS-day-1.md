@@ -26,9 +26,12 @@
     (get-process chrome*).kill()
     
     get-process | get-member | where-object {$_.membertype -match "method"}
+    only pulling method's from the output of get-member
 
     get-process | select name, id, path | where {$_.id -lt '1000'}
     shows processes with an id less than 1000
+
+    get-host - shows version of powershell you're using
     
  ## transcripts
 
@@ -38,4 +41,10 @@
      ** then navigate to location and view/rename transcript **
 
 
- ## 
+ ## CIM Classes
+
+    get-cimclass *
+     shows all of your cim classes
+    get-ciminstance -class win32_bios
+     shows all of your bios information
+     
