@@ -42,9 +42,13 @@
 
 
  ## CIM Classes
-
+    use this command when dealing with things like bios, or other physical things on machine.
     get-cimclass *
      shows all of your cim classes
     get-ciminstance -class win32_bios
      shows all of your bios information
-     
+
+ ## adding and removing items
+
+    new-item does_not_exist.txt (-erroraction SilentlyContinue)
+    remove-item does_not_exist.txt (-verbose)
