@@ -1,2 +1,3 @@
  ##https://os.cybbh.io/public/os/latest/index.html (student guide)
+    
     xfreerdp /u:student /v:10.50.34.195 /dynamic-resolution +glyph-cache +clipboard
