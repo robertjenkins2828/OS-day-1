@@ -1,6 +1,9 @@
  ##https://os.cybbh.io/public/os/latest/index.html (student guide)
 
      stack number = 9
+     ip = 10.50.25.139 ADMIN IP
+     http://10.50.22.197:8000/ CTFD IP
+     LUMC-M-502
     
     xfreerdp /u:student /v:10.50.34.195 /dynamic-resolution +glyph-cache +clipboard (use this command to get into the system)
 
@@ -34,7 +37,18 @@
     shows processes with an id less than 1000
 
     get-host - shows version of powershell you're using
-    
+
+    measure-object - counting lines in a file, summing, averaging
+    select-string - search for text patterns in a string
+
+    get-alias -definition Get-childitem (shows all aliases for get childitem)
+
+     Get-CimInstance win32_service | ?{$_.Name -like 'LegoLand'} | select Description ((shows description of service))
+
+      Compare-object (get-content new.txt) (get-content old.txt) ((compares difference between two text file))
+
+     (get-content words.txt | Select-String -pattern "a","z").length ((counts number of times a or z appears in a word in the text file
+     
  ## transcripts
 
     start-transcript
