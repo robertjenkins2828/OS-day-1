@@ -48,6 +48,8 @@
       Compare-object (get-content new.txt) (get-content old.txt) ((compares difference between two text file))
 
      (get-content words.txt | Select-String -pattern "a","z").length ((counts number of times a or z appears in a word in the text file
+
+     attached drives cli - fsutil fsinfo drives
      
  ## transcripts
 
@@ -102,7 +104,67 @@
      $profile - tells us where the current profile is stored at
      
 ## linux persistence mechanisms
+
+
+## Windows Registry
+
+    HKLM - HKEY_LOCAL_MACHINE
+      HARDWARE - contains a database of installed devices along with their drivers
+      SAM - Security Account Manager stores user and group accounts along with NTLM hashes of passwords
+      Security - Local Security policy accessed by lsass.exe used to determine rights and permissions for users on the machine
+      System - Contains keys pertaining to system startup such as programs started on boot or driver load order.
+      
+    HKU - HKEY_USERS
+     contains user profiles on system. one key per user, each key is named after the SID of the user
+     
+    HKCU - HKEY_CURRENT_USERS
+      is the copy of the logged in user’s registry key based on thier SID from HKEY_USERS.
+    HKCC - HKEY_CURRENT_CONFIG
     
+    HKCR - HKEY_CLASSES_ROOT
+
+    All hives in HKLM are stored in %SYSTEMROOT%\System32\config\ (%SYSTEMROOT% usually refers to C:\WINDOWS).
+
+    view/manipulate registry - regedit.exe
+## manipulating registry in cmd
+
+    ex: opening registry in command line
+    reg query HKLM\software\microsoft\windows\currentversion\run
+    reg add HKLM\SOFTWARE\microsoft\windows\currentversion\run /v testme /t REG_SZ /d C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+    reg delete HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v testme
+
+## manipulating registry in powershell
+
+    Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run ((reads sub keys from input value))
+    Get-item HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run ((reads value of inputted object))
+    New-Item "HKLM:\Software\Microsoft\Office\14.0\Security\Trusted Documents\TrustRecords" -Force ((creates new sub key associated with hive))
+    
+    New-ItemProperty "HKLM:\Software\Microsoft\Office\14.0\Security\Trusted Documents\TrustRecords" -Name "%USERPROFILE%Downloads/test-document.doc" -PropertyType Binary -Value ([byte[]](0x30,0x31,0xFF)) 
+
+     New-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name Test -PropertyType String -Value C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe 
+
+      Get-LocalUser | select Name, sid ((to see local users & sids in powershell))
+
+## PSDrives
+
+    Get-PSDrive ((find current PSDrives))
+    New-PSDrive -PSProvider Registry -name HKU -Root HKEY_USERS ((add a drive))
+    https://os.cybbh.io/public/os/latest/004_windows_registry/reg_fg.html
+
+## Alternate Data Streams 
+
+    https://os.cybbh.io/public/os/latest/005_windows_ads/ads_fg.html
+    echo Always try your best > reminder.txt
+    echo social security numbers > reminder.txt:secret.info ((adds social security numbers to reminder .txt in ADS))
+    more < reminder.txt:secret.info ((to view hidden ADS))
+    or
+    notepad reminder.txt:secret.info
+
+    To determine if there is an ADS do:
+    dir /R
+    
+    
+
   
 
   
