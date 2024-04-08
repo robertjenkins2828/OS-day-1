@@ -162,6 +162,82 @@
 
     To determine if there is an ADS do:
     dir /R
+
+  ## Linux Essentials
+  
+     https://os.cybbh.io/public/os/latest/003_linux_essentials/bash_fg.html
+     netstat -ano         to look at connections / ports
+     pivot from port opening an executable - netstat -ano ((sudo netstat -ltup))
+     ~ home directory
+     / root directory
+     file permissions       user,group,owner
+     help information ls -- help
+     or 
+     man ls
+     variables in linux:     a="100"       directories=$(ls /)
+                             echo $a       echo $directories
+                             100
+     
+     redirection -           echo $directories 1> thisisanewfile
+     0 - standard input      cat thisisanewfile ((opens up your ls output from above))
+     1 - standard output
+     2 - standard error      ls bacon 2>/dev/null ((bacon doesnt exist, sends error message to the void))
+
+     piping -                ls -Rlisa /etc | grep syslog ((R means recursive, grep is to search for a string)) 
+
+     looping -                objects=$(ls -d /etc/*)
+                              echo $objects
+                              for item in $objects; do echo $item; done
+                              or 
+                              for object in $objects; do if [ -d $object ]; then echo "$object is a directory"; else echo "$object is a file" ; fi ; done
+
+## Linux File Systems
+
+    /bin directory - contains system binaries (commands like ls and echo)
+    /home - contains directories for non root users
+    /etc - contains configuration files, network configs, system services, firewall stuff etc
+    /var - contains variable data, system logs etc.
+
+    id - command that shows user id, group id etc. 
+    cat /etc/passwd - also shows user information (might have to sudo it)
+    ex: sudo cat /etc/passwd | grep garviel
+
+    ex: man -k "digest"            searches man pages for something containing digest
+
+    find ip's in a file:            cat numbers.txt | grep -Po '^\d{1,3}\.\d{1,3}\.\d{1,3}.\d{1,3}$' | wc -l
+
+
+ ## Windows Boot Process
+
+    https://os.cybbh.io/public/os/latest/006_windows_boot_process/winboot_fg.html
+    
+    lsass.exe - the Local Security Authority Subsystem (LSASS) provides user authentication services, manages the local security policy, and generates access tokens.
+
+    services.exe the Services Control Manager (SCM) loads AutoStart services, using LSASS to authenticate if they run as something other than System.
+
+    Ways to check services - 
+     reg query hkey_local_machine\system\currentcontrolset\services\Spooler
+     tasklist /svc
+
+     bcdedit
+     bcdedit /set {current} description "this is a description" ((to change something in bcd)
+     
+     To add stuff to bcd --
+     bcdedit /create {ntldr} /d "win XP" -> bcdedit /set {ntldr} device partition=C: -> bcdedit /set {ntldr} path \downloads -> bcdedit /displayorder {ntldr} /addfirst
+
+     to delete stuff from bcd --
+     bcdedit /delete {ntldr} /f
+
+     to restore backup -- 
+     bcdedit /import C:\bcd.bk
+    
+
+
+     
+    
+     
+
+     
     
     
 
