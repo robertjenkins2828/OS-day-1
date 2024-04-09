@@ -230,17 +230,74 @@
 
      to restore backup -- 
      bcdedit /import C:\bcd.bk
+
+ ## Linux Boot Process
+
+    https://os.cybbh.io/public/os/latest/007_linux_boot_process/linboot_fg.html
+    MBR - first 512 bytes of the HDD
+    lsblk - list block devices, shows disk spaces 
+    ex:
+    sudo xxd -l 512 -g 1 /dev/vda
+    shows:
+    Execute xxd to hexdump 512 bytes in separated by 1 byte from /dev/vda to the screen
+    The start of the hard drive shown by the code eb 63. File signature for an MBR.
+    The first partition of the hard drive in 0x01be shown as 80
+    The second partition entry is blank!
+
+    ex:
+    dd if=/dev/vda of=MBRcopy bs=512 count=1
+    shows:
+    Execute dd which copies 512 bytes once from /dev/vda to a file in my current directory called MBR
+    Notice, dd failed to run
+    !! represents the previous command. Run it with sudo permissions.
+    Execute file to read the file signature from the MBR file
+    ((dd is a bit for bit copy))
+
+    ex:
+    cat /boot/grub/grub.cfg
+    shows:
+    look through kernel to see what config you're going to load
     
+     ex:
+     ltrace -S cat /etc/passwd
+     shows:
+     shows system calls in linux
 
+     ex:
+     /etc/rc3.d$ ls -l /etc/rc3.d/
+     List the contents of the /etc/rc3.d/ directory
+    
+     ex:
+     systemctl list-dependencies graphical.target
+     list unit dependencies in tree-form
 
+     ex:
+     systemctl show -p Wants graphical.target
+     show wants to individual units
+
+     ex:
+     systemctl list-unit-files
+     list every individual unit file
+
+     The /etc/environment file sets Global Variables. Global Variables are accessible by every user or process on the system. It is read once when the machine completes Init. Any changes to the file require a system restart for them to apply. ((persistence))
+     ex: cat /etc/environment
      
-    
-     
+    /etc/profile is a script that executes whenever a user logs into an interactive shell on Linux. its functionality depends entirely on the version of Linux being used. Ubuntu Linux uses it to set the BASH shell prompt by executing /etc/bash.bashrc and execute any script named *.sh in /etc/profile.d ((persistence))
+    ex: cat /etc/profile 
 
-     
-    
-    
+     Unique to BASH(Bourne Again Shell) are .bash_profile and .bashrc. They execute on a per user basis for interactive logins only. Both files are located every user’s /home directory. They are user specific configurations and freely editable by the owning user or root. ((persistence))
 
+     linux persistence: etc/environment | inittab | /etc/profile | .bashprofile | runlevels
   
 
-  
+     How many wants dependencies does SystemD actually recognize for the default.target
+     systemctl show -p Wants default.target | wc
+ 
+
+
+ ### Windows process validity
+
+     https://os.cybbh.io/public/os/latest/008_windows_process_validity/winproc_fg.html
+     
+     
+     
