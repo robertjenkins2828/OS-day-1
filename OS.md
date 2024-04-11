@@ -115,6 +115,13 @@
           -    scheduled tasks
           -    zombie or orphaned processes/damaen
           -    crontab
+          /etc/profile
+    /etc/profile.d/* (various scripts in /etc/profile.d/)
+    /home/<username>/.bash_profile (this fails, I have no such file)
+    /home/<username>/.bash_login (this fails, I have no such file)
+    /home/<username>/.profile
+    /home/<username>/.bashrc
+    /home/<username>/.bash_history (hi
 
 
 ## Windows Registry
