@@ -105,6 +105,17 @@
      
 ## linux persistence mechanisms
 
+    /etc/init, /etc/inittab and /etc/rd0.d
+    Are all places to look for persistence in Linux
+    /etc/environment
+    Holds all environmental variables and can contain persistence
+    /etc/profile 
+    Holds script 
+          -	Bash_profile and .bashrc
+          -    scheduled tasks
+          -    zombie or orphaned processes/damaen
+          -    crontab
+
 
 ## Windows Registry
 
