@@ -316,6 +316,114 @@
  ### Windows process validity
 
      https://os.cybbh.io/public/os/latest/008_windows_process_validity/winproc_fg.html
+
+ ## Windows Auditing and Logging
+    https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/artifacts_fg.html
+    UserAssist
+    Windows Background Activity Moderator (BAM)
+    Recycle Bin
+    Prefetch
+    Jump Lists
+    Recent Files
+    Browser Artifacts
+     
+     Many artifacts will require the use of a Security Identifer (SID) to dig into the user specific registry locations for the artifact information.
+     powershell - 
+     Get-LocalUser | select Name,SID
+     Get-WmiObject win32_useraccount | select name,sid
+
+     CMD -
+     wmic UserAccount get name,sid 
+
+     The UserAssist registry key tracks the GUI-based programs that were ran by a particular user
+     They are located in HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count\ * they are encoded in ROT13
+     CEBFF5CD-ACE2-4F4F-9178-9926F41749EA A list of applications, files, links, and other objects that have been accessed
+     F4E57C4B-2036-45F0-A9AB-443BCFE33D9F Lists the Shortcut Links used to start programs
+     Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count"
+     *** for all users ***
+     Get-ItemProperty "Registry::Hkey_Users\*\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count"
+
+     Windows Background Activity Moderator (BAM) BAM is a Windows service that Controls activity of background applications (shows full path of an executable / last execution date/time.)
+     HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings
+     HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings
+
+     BAM entries for every user on the system
+     Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\state\UserSettings\*
+
+     single user on the system
+     wmic useraccount  get caption,sid | more -> then
+     Get-Itemproperty 'HKLM:\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings\S-1-5-21-1584283910-3275287195-1754958050-1005'
+
+     Recycle Bin
+     SID - determines which user deleted it
+     Timestamp - When it was deleted
+     $RXXXXXX - content of deleted files
+     $IXXXXXX - original PATH and name
+
+     C:\$Recycle.bin
+
+     Find the Contents of the Recycle Bin
+     Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName
+
+     Match SID to USER:
+     wmic useraccount where 'sid="S-1-5-21-1584283910-3275287195-1754958050-1005"' get name
+
+     To find Recycle Bin artifacts for a specific user, match the SID, then append it to the previous command:
+      Get-Content 'C:\$Recycle.Bin\S-1-5-21-1584283910-3275287195-1754958050-1005\$R8QZ1U8.txt'
+
+      Prefetch
+      Prefetch files are created by the windows operating system when an application is run from a specific location for the first time.
+      location -> C:\Windows\Prefetch
+
+      ex: Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select -First 8
+
+      Jump Lists:
+      location -> C:\%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations
+      demo:
+      Get-Childitem -Recurse C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction Continue | select FullName, LastAccessTime
+
+      Recent Files -
+      HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs
+      HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt
+
+      Demo: Query the Hex Value Stored in the Key
+      Get-Item 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.*'
+
+      Browser Artifacts - 
+      %USERPROFILE%\AppData\Local\Google\Chrome\User Data\Default\history
+      C:\Users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\
+
+      #frequency : Z:\strings.exe 'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\History' -accepteula
+
+      #most visited: Z:\strings.exe 'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\Top Sites'
+
+      #user names: Z:\strings.exe  'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\Login Data'
+
+      Get history - 
+    $History = (Get-Content 'C:\users\student\AppData\Local\Google\Chrome\User Data\Default\History') -replace "[^a-zA-Z0-9\.\:\/]",""
+     then
+     $History| Select-String -Pattern "(https|http):\/\/[a-zA-Z_0-9]+\.\w+[\.]?\w+" -AllMatches|foreach {$_.Matches.Groups[0].Value}| ft
+
+     Command Prompt: Checking System Wide Auditing Policy for all objects
+     auditpol /get /category:*
+
+     *Viewing Logs in Powershell*
+     Get-EventLog -LogName System -Newest 10
+     Get-EventLog -LogName System -Newest 3 | Format-Table -Wrap
+     or
+     Get-Eventlog -LogName Security | ft -wrap 
+     Get-Eventlog -LogName Security | ft -wrap | findstr /i StR1nG 
+
+     find log type to query
+     Get-WinEvent -Listlog *
+     Get-WinEvent -Listlog * | findstr /i "Security"
+
+     Check if a user logged in:
+     Get-Winevent -FilterHashtable @{logname='Security';id='4624'} | ft -Wrap
+     
+     powershell history location
+     C:\Users\username\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
      
      
      
+      
