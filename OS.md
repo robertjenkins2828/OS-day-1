@@ -424,6 +424,10 @@
      powershell history location
      C:\Users\username\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
      
-     
-     
+     Which sysinternals tool is used to parse logs? - psloglist
+
+     What Sysinternals tool will allow you to read the SQLite3 database containing the web history of chrome? - strings
+
+     Enter the full path of the program that was run on this computer from an abnormal location.
+     Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\state\UserSettings\*
       
