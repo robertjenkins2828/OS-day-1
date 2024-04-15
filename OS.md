@@ -486,4 +486,78 @@
 
     Select every IP address with open (in use) ports using XPATH queries and XPATH axes.
     xpath -q -e '//ports/port/state[@state="open"]/../../../address/@addr | //ports/port[state/@state="open"]/@portid' output.xml | md5sum
+
+
+ ## Memory Analysis
+
+    Order of Volatility From Most to Least
+
+    CPU registers, cache
+    
+    Routing table, ARP cache, process table, kernel stats, memory
+    
+    Temporary file systems
+    
+    Disk
+    
+    Remote logging and monitoring data
+    
+    Physical configuration, network topology
+    
+    Archival media - backups
+
+    ex:
+    What profile do you use in conjunction with this memory image?
+
+    Use the following file (memory image) to answer the rest of the Memory Analysis challenges.
+    
+    0zapftis.vmem
+     
+     .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" imageinfo
+
+     ex: to view history
+
+     What command did the attacker type to check the status of the malware?
+
+     .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" --profile=WinXPSP2x86 cmdscan
+     
+     ex:
+     What are the last 7 digits of the memory offset for the driver used by the malware?
+     .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" --profile=WinXPSP2x86 driverscan
+
+     ex:
+     The process running under PID 544 seems malicious. What is the md5hash of the executable?
+      .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" --profile=WinXPSP2x86 procdump -p 544 -D .
+      then
+      Set-MpPreference -ExclusionPath 'C:\Users\andy.dwyer\Desktop\Memory_Analysis\'
+      then
+      Get-FileHash .\executable.544.exe -algorithm md5 ((run mppreference before everything maybe))
+
+      ex:
+       What remote IP and port did the system connect to?
+      .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" --profile=WinXPSP2x86 connscan
+
+
+  ## Active Directory
+
+    https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/active_fg.html
+    Examples of suspicious accounts include:
+
+    Administrator accounts that aren’t known to the network owners
+    
+    Accounts that have been active outside of normal work hours
+    
+    Accounts that are nested in multiple administrative groups
+    
+    Service accounts logging into workstations
+    
+    Accounts that have logged in directly to the Domain Controller that are not normally authorized to do so
+    
+    This information can be collected through PowerShell and Windows Event Logs on the Domain Controller. Windows Logs are the best way to identify security issues.*
+
+    *** use event viewer to check windows event logs ***
+
+   
+
+     
      
