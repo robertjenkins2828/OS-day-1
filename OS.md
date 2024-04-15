@@ -557,7 +557,16 @@
 
     *** use event viewer to check windows event logs ***
 
-   
+    Find the unprofessional email addresses. List the email's domain.
+    Get-ADUser -Filter {EmailAddress -like '*'} -Properties EmailAddress | Select Name, EmailAddress
 
      
-     
+     ex:
+     Find the accounts that contain unprofessional information in the description.
+       Get-ADUser -Filter * -properties description | Select-Object Description,name
+
+       ex:
+       How many total users are members of the Domain Admins group?
+        Get-ADGroupMember -Identity 'Domain Admins' -recursive | select name
+       
+
