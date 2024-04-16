@@ -568,5 +568,60 @@
        ex:
        How many total users are members of the Domain Admins group?
         Get-ADGroupMember -Identity 'Domain Admins' -recursive | select name
+
+
+   ## Test Review
+
+      pull over sysinternals tools suite using net use
+
+      Windows persistence / launch mechanisms
+         - run/run once keys
+         - scheduled tasks 
+         - Powershell profiles: testpath -path $profile allusersallhosts -> if true, cat what you just tested (test-path -path $profile.allusersallhosts)
+
+     Linux Persistence:
+         - bash profiles (etc/profile)
+         - Cron (etc/cron or /var/spool/cron) ** if ya see something there, cat it, if permission denied try sudo *** sudo -l
+         - init 
+         - daemons
+         - runlevels
+
+     methodology - 
+
+          - suspicious ports (repeating / sequential numbers)
+             in linux - get ports and pids using (sudo netstat -ltup)
+             netstat -ano/b
+
+             find the process -> what started the process? -> find where the process was launched from, persistence mechanism, maybe multiple. 
+
+     linux process tree - 
+
+         ps -elf --forest
+
+     windows process tree - 
+
+        use sysinternals for process tree (procmon/procexp) don't forget autoruns for other things (scheduled tasks, runkeys etc)
+
+          PORT/PID
+           get-process <pid> | select name, id, path
+
+           Windows Artifacts:
+
+             recycle bin
+           1** BAM - Pretty easy, just pulling registry location (suspicious paths, not sys32, maybe public/downloads)
+           2** prefetch - alot of stuff to parse through
+               jump list
+               recent
+           3** userassist - ROT13 
+               browser
+        
+             
+          
+         
+         
+         
+         
+        
+      
        
 
