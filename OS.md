@@ -573,6 +573,11 @@
    ## Test Review
 
       pull over sysinternals tools suite using net use
+      https://os.cybbh.io/public/os/latest/015_windows_sysinternals/sysint_fg.html
+      PS C:\windows\system32> New-PSDrive -Name "SysInt" -PSProvider FileSystem -Root "\\live.sysinternals.com\Tools"
+      PS C:\Users\andy.dwyer\Desktop> $wc = new-object System.Net.WebClient
+      PS C:\Users\andy.dwyer\Desktop> $wc.DownloadFile("https://download.sysinternals.com/files/SysinternalsSuite.zip","$pwd\SysinternalsSuite.zip")
+      PS C:\Users\andy.dwyer\Desktop> Expand-Archive SysinternalsSuite.zip
 
       Windows persistence / launch mechanisms
          - run/run once keys
