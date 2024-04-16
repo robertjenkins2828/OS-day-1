@@ -611,7 +611,7 @@
            get-process <pid> | select name, id, path
 
            Windows Artifacts:
-
+           https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/artifacts_fg.html
              recycle bin
            1** BAM - Pretty easy, just pulling registry location (suspicious paths, not sys32, maybe public/downloads)
            2** prefetch - alot of stuff to parse through
@@ -619,6 +619,13 @@
                recent
            3** userassist - ROT13 
                browser
+
+        EXTRA USEFUL SHIT - 
+
+        Get-LocalUser | select Name,SID (find usernames and SIDS)
+        Get SIDS in command prompt -> wmic UserAccount get name,sid
+        
+        
         
              
           
