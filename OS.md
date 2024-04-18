@@ -624,6 +624,10 @@
 
         Get-LocalUser | select Name,SID (find usernames and SIDS)
         Get SIDS in command prompt -> wmic UserAccount get name,sid
+
+        SysV or SystemD
+        /lib/systemd/system ** for SystemD
+        /sbin/init ** for SysV
         
         
         
