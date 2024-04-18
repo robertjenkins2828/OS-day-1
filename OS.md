@@ -634,7 +634,9 @@
         SysV or SystemD
         /lib/systemd/system ** for SystemD
         /sbin/init ** for SysV
-        
+
+        FraG=P3rS1st_@Ll_DaY!
+        more $profile.allusersallhosts
         
         
              
