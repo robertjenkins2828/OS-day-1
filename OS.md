@@ -1,6 +1,6 @@
  ##https://os.cybbh.io/public/os/latest/index.html (student guide)
 
-     stack number = 9
+     stack number = 9 / 8
      ip = 10.50.25.139 ADMIN IP
      http://10.50.22.197:8000/ CTFD IP
      LUMC-M-502
