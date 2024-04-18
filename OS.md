@@ -7,6 +7,12 @@
     
     xfreerdp /u:student /v:10.50.34.195 /dynamic-resolution +glyph-cache +clipboard (use this command to get into the system)
 
+    for test - 
+    windows:
+    10.50.37.165
+    linux:
+    10.50.35.87
+
  ## open powershell, run as admin **POWERSHELL COMMANDS**
 
     **commands:**
